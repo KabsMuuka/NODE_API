@@ -12,7 +12,7 @@ const studentSchema = mongoose.Schema({
         type: String,
             require: true,
     },
-    studentiD: {
+    studentID: {
         type: String,
             require: true,
         },
@@ -25,6 +25,6 @@ const studentSchema = mongoose.Schema({
             require: true,
     },
 });
-const students = mongoose.model("studentsDetails",studentSchema);
+const students = mongoose.model("studentsdetails",studentSchema);
 
 module.exports = students;
