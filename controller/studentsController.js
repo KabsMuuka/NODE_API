@@ -1,5 +1,6 @@
 const studentModel = require("../models/studentsModel");
 //router.get
+
 const getStudents = async(req,res)=>{
     try {
         const getAllInfor = await studentModel.find({});
