@@ -3,8 +3,9 @@ const studentModel = require("../models/studentsModel");
 
 const getStudents = async(req,res)=>{
     try {
-        const getAllInfor = await studentModel.find({});
-        res.status(200).json(getAllInfor);
+        throw new Error('fake error');
+        // const getAllInfor = await studentModel.find({});
+        // res.status(200).json(getAllInfor);
     } catch (error) {
         res.status(500).json({message:error.message});
     }
