@@ -1,65 +1,61 @@
-const studentModel = require("../models/studentsModel");
-//router.get
+const connection = require('../db/database');
 
-const getStudents = async(req,res)=>{
+const getStudents = async(req, res) => {
+    connection.query('SELECT * FROM StudentDetails', (error, result) =>{
+    if (error) throw error;
+
+    if (result.length > 0) {
+        res.status(200).json(result)
+    }else if(result.length === 0) {
+        res.status(500).json({message : `Sorry the database table is empty!`});
+    }
+   });
+};
+
+
+const getPost = async(req,res)=>{
     try {
-        throw new Error('fake error');
-        // const getAllInfor = await studentModel.find({});
-        // res.status(200).json(getAllInfor);
+        const {fullName, studentSin } = req.body;
+
+        const insertData = 'INSERT INTO StudentDetails(fullName, studentSin) VALUES(?, ?)';
+        connection.query(insertData, [fullName, studentSin]);
+
+        res.status(200).json({message : 'Student information Successfully added to table'});
+
     } catch (error) {
         res.status(500).json({message:error.message});
     }
 };
+
 //router.put 
 const getPut = async(req,res)=>{
     try {
     //get the dynamic 
     const {id} = req.params;
-    //get the id of and clients req they want to edit!!
-    const getId = await studentModel.findByIdAndUpdate(id,req.body);
 
-    //whenever you are fetching from the database always use await
-    const updatedDetails = await studentModel.findById(id);
-    res.status(200).json(updatedDetails);
+    const updateQuerry = 'UPDATE StudentDetails SET ? WHERE id = ?';
 
-    if(!getId){
-        return res.status(404).json({message: `ID not found with this id ${id}`});
-    }
+    //array of values to update
+    const values = [req.body, id];
     
+    const updatedResults =  connection.query(updateQuerry, values);
+
+    if(updatedResults.affectedRows === 0){
+        return res.status(404).json({message: `ID not found. id =/= ${id}`});
+        
+    }else{
+         res.status(200).json({message: `Succesfully updated the rows of the ${id}`});
+    }
+
     } catch (error) {
         console.log({message:error.message});
     }
 };
 
-const getPost = async(req,res)=>{
-    try {
-        //req.body is the information coming from the client 
-        const addStudentInfo = await studentModel.create(req.body);
-        res.status(200).json(addStudentInfo);
-
-    } catch (error) {
-        res.status(500).json({message:error.message});
-    }
-};
-const getDelete = async(req,res)=>{
-    try {
-        const {id} = req.params;
-        const deleteStudentInfor = await studentModel.findByIdAndDelete(id);
-        const getAllInfor = await studentModel.find({});
-        res.status(200).json(getAllInfor);
-
-        if(!deleteStudentInfor){
-            return res.status(404).json({message: 'ID not found'});
-        }
-    } catch (error) {
-        console.log({message:error.message});
-    }
-};
 
 module.exports = {
     getStudents,
     getPut,
     getPost,
-    getDelete,
 }
 

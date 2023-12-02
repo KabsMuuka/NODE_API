@@ -1,6 +1,5 @@
 const dotenv = require('dotenv');
 dotenv.config();
-const {mongoose} = require('mongoose');
 const express = require('express');
 const app = express();
 const port = 3000;
@@ -9,24 +8,20 @@ const errorMiddleWare = require('./middleWare/errorMiddleWare');
 
 app.use(express.json());
 
-app.use("/api/studentsdetails",studentsRoutes)
+app.use("/",studentsRoutes)
 
 //using error middle
-app.use(errorMiddleWare);
+app.use(errorMiddleWare);file:///home/kabs/Downloads/Online_hotel_booking_system/server.js
 
 
-function ConnectToDB(){
-    mongoose.connect('mongodb://127.0.0.1:27017').then(()=>{
-    app.listen(port,()=>{
+
+
+app.listen(port,()=>{
     console.log(`sever is running on port ${port}`);
     });
-});
-
-}
-ConnectToDB();
 
 app.get('/',(req,res)=>{
    throw new Error("fake error")
-})
+});
 
 
