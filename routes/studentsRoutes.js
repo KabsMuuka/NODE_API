@@ -1,15 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const {getStudents,getPut,getPost,getDelete} = require("../controller/studentsController")
+const {getStudents, InsertToTable, UpdateTable, searchTable} = require("../controller/studentsController")
 
 // CHANGE EVERYTHING TO POSTSQL ?????
 
 
 router.get("/api",getStudents);
 
-router.post("/add",getPost);
+router.get("/:id",searchTable);
 
-router.put("/:id",getPut);
+router.post("/add",InsertToTable);
+
+router.put("/:id",UpdateTable);
 
 // //deleting from the database!
 

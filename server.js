@@ -8,17 +8,16 @@ const errorMiddleWare = require('./middleWare/errorMiddleWare');
 
 app.use(express.json());
 
+app.use(errorMiddleWare);
+
 app.use("/",studentsRoutes)
-
-//using error middle
-app.use(errorMiddleWare);file:///home/kabs/Downloads/Online_hotel_booking_system/server.js
-
-
 
 
 app.listen(port,()=>{
     console.log(`sever is running on port ${port}`);
     });
+
+
 
 app.get('/',(req,res)=>{
    throw new Error("fake error")

@@ -1,3 +1,4 @@
+const e = require('express');
 const connection = require('../db/database');
 
 const getStudents = async(req, res) => {
@@ -12,8 +13,24 @@ const getStudents = async(req, res) => {
    });
 };
 
+const searchTable = async (req,res) => {
+    try {
+        const {id} = req.params;
+    
+        connection.query(`SELECT * FROM StudentDetails WHERE id = ?`,[id],(error,results)=>{
+          if(error) throw error;
+          if(results){
+            res.status(200).json({results});
 
-const getPost = async(req,res)=>{
+          }else {
+            res.status(404).json({message: 'Information not found in the database'});
+          }
+            });
+    } catch (error) {
+        console.log(error)
+    }
+}
+const InsertToTable = async(req,res)=>{
     try {
         const {fullName, studentSin } = req.body;
 
@@ -28,7 +45,7 @@ const getPost = async(req,res)=>{
 };
 
 //router.put 
-const getPut = async(req,res)=>{
+const UpdateTable = async(req,res)=>{
     try {
     //get the dynamic 
     const {id} = req.params;
@@ -52,10 +69,10 @@ const getPut = async(req,res)=>{
     }
 };
 
-
 module.exports = {
     getStudents,
-    getPut,
-    getPost,
+    searchTable,
+    InsertToTable,
+    UpdateTable
 }
 
